@@ -84,6 +84,8 @@ function reset_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global image;
+global p;
+p = nan;
 image = nan;
 fileName = "C:\Users\gurbe\OneDrive\Masaüstü\machineVis\images\FiratLogo.jpg";
 firatLogo = imread(fileName);
@@ -200,6 +202,7 @@ function large_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global shapeNewImage
+global p
 p = sizeDetector(shapeNewImage,1);
 plot_circle(p,20,'fillcolor','g');
 
@@ -236,15 +239,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
-
-function edit2_Callback(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit2 as text
-%        str2double(get(hObject,'String')) returns contents of edit2 as a double
 
 
 % --- Executes during object creation, after setting all properties.
