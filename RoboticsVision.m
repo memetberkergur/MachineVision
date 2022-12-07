@@ -55,7 +55,7 @@ function RoboticsVision_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for RoboticsVision
 handles.output = hObject;
 startup_rvc;
-fileName = "C:\Users\gurbe\OneDrive\Masaüstü\machineVis\images\FiratLogo.jpg";
+fileName = "images\FiratLogo.jpg";
 firatLogo = imread(fileName);
 axes(handles.axes1)
 imshow(firatLogo)
@@ -87,7 +87,7 @@ global image;
 global p;
 p = nan;
 image = nan;
-fileName = "C:\Users\gurbe\OneDrive\Masaüstü\machineVis\images\FiratLogo.jpg";
+fileName = "images\FiratLogo.jpg";
 firatLogo = imread(fileName);
 axes(handles.axes1)
 imshow(firatLogo)
