@@ -1,29 +1,44 @@
 clc;
 clear;
 
+addpath(genpath('corke_toolbox\corke_toolbox'));
 fileName = "images/IMG_6879.JPEG";
 [image,meta] = iread(fileName,'double');
-colorSelector = 2;
+
+% Ön tanımlı değerler
+colorSelector = 3;
 shapeSelector = 3;
 sizeSelector = 1;
 
+% Orjinal Görüntü 
+idisp(image)
+pause(2)
 
-
-% İçeri aktarılan görüntünün renklerine ayrıştırılması
-%colorSelector = menu('Lütfen Renk Seçiniz',"Kırmızı","Yeşil","Mavi");
-newImage = colorDetector(image,colorSelector);
-
-% Renklerine ayrıştırılan görüntünün içerisinden nesnelerin seçimi
-%shapeSelector = menu("Lütfen Bir Şekil Seçiniz","Kare","Üçgen","Daire");
-newImage = shapeDetector(newImage,shapeSelector);
-
-% Seçilen nesnelerin boyutlarının belirlenmesi
-% sizeSelector = menu("Lütfen Bir Boyut Seçiniz","En Büyük","En Küçük");
-
+% Düzeltilmiş görüntü
+[newImage,~] = getCalibration(image);
+[newImage,homographyMatrix] = getCalibration(newImage);
 idisp(newImage)
-p = sizeDetector(newImage,sizeSelector);
-plot_circle(p,30,'fillcolor','#FF66B2','alpha',0.3)
 
-% Seçilen nesne için gerçek koordinatlarının hesaplanması
-[xAxes,yAxes] = coordinateDetector(p);
-fprintf('Seçilen Nesnenin Gerçek Koordinatı ; \n\t x=%d \n\t y=%d',xAxes,yAxes);
+% Renklerin Ayrıştırılması
+colorSelector = menu('Lütfen Renk Seçiniz',"Kırmızı","Yeşil","Mavi");
+newImage = colorDetector(newImage,colorSelector);
+idisp(newImage)
+
+% Şekillerin Tespiti
+shapeSelector = menu("Lütfen Bir Şekil Seçiniz","Kare","Üçgen","Daire");
+newImage = shapeDetector(newImage,shapeSelector);
+idisp(newImage)
+
+% Boyut Tespiti
+sizeSelector = menu("Lütfen Bir Boyut Seçiniz","En Büyük","En Küçük");
+p = sizeDetector(newImage,sizeSelector);
+plot_circle(p,30,'fillcolor','g','alpha',0.6)
+
+%Gerçek Koordinatların Ekranda Gösterilmesi
+reelAxes = coordinateDetector(homographyMatrix,p);
+fprintf('\nX ekseni = %.2f cm \nY ekseni = %.2f cm',reelAxes(1),reelAxes(2))
+
+% % Robotun Çalıştırılması
+%startRobot(reelAxes(1),reelAxes(2),colorSelector,'COM4');
+
+

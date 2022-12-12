@@ -22,7 +22,7 @@ function varargout = RoboticsVision(varargin)
 
 % Edit the above text to modify the response to help RoboticsVision
 
-% Last Modified by GUIDE v2.5 03-Dec-2022 19:22:56
+% Last Modified by GUIDE v2.5 10-Dec-2022 21:29:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -54,7 +54,7 @@ function RoboticsVision_OpeningFcn(hObject, eventdata, handles, varargin)
 
 % Choose default command line output for RoboticsVision
 handles.output = hObject;
-startup_rvc;
+addpath(genpath('corke_toolbox\corke_toolbox'));
 fileName = "images\FiratLogo.jpg";
 firatLogo = imread(fileName);
 axes(handles.axes1)
@@ -85,6 +85,10 @@ function reset_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global image;
 global p;
+global homographyMatrix;
+global calibrationImage;
+calibrationImage = nan;
+homographyMatrix = nan;
 p = nan;
 image = nan;
 fileName = "images\FiratLogo.jpg";
@@ -110,17 +114,24 @@ function gethomography_Callback(hObject, eventdata, handles)
 % hObject    handle to gethomography (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+global image
+global homographyMatrix
+global calibrationImage
+[calibrationImage,~] = getCalibration(image);
+[calibrationImage,homographyMatrix] = getCalibration(calibrationImage);
+axes(handles.axes1)
+imshow(calibrationImage)
 
 % --- Executes on button press in getcoordinates.
 function getcoordinates_Callback(hObject, eventdata, handles)
 % hObject    handle to getcoordinates (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global p;
-[x,y] = coordinateDetector(p);
-set(handles.edit1,'String',x)
-set(handles.edit2,'String',y)
+global p
+global homographyMatrix
+reelAxes = coordinateDetector(homographyMatrix,p);
+set(handles.edit1,'String',reelAxes(1))
+set(handles.edit2,'String',reelAxes(2))
 
 
 % --- Executes on button press in red.
@@ -128,9 +139,9 @@ function red_Callback(hObject, eventdata, handles)
 % hObject    handle to red (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global image
+global calibrationImage
 global newImage
-newImage = colorDetector(image,1);
+newImage = colorDetector(calibrationImage,1);
 axes(handles.axes1)
 imshow(newImage)
 
@@ -139,9 +150,9 @@ function green_Callback(hObject, eventdata, handles)
 % hObject    handle to green (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global image
+global calibrationImage
 global newImage
-newImage = colorDetector(image,2);
+newImage = colorDetector(calibrationImage,2);
 axes(handles.axes1)
 imshow(newImage)
 
@@ -152,9 +163,9 @@ function blue_Callback(hObject, eventdata, handles)
 % hObject    handle to blue (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global image
+global calibrationImage
 global newImage
-newImage = colorDetector(image,3);
+newImage = colorDetector(calibrationImage,3);
 axes(handles.axes1)
 imshow(newImage)
 
@@ -252,3 +263,33 @@ function edit2_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+function edit5_Callback(hObject, eventdata, handles)
+% hObject    handle to edit5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit5 as text
+%        str2double(get(hObject,'String')) returns contents of edit5 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton29.
+function pushbutton29_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton29 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

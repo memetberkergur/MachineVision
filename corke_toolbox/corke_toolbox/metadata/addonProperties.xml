@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?><addonProperties xmlns="http://schemas.mathworks.com/matlab/addon/2014/addonProperties"><identifier type="GUID">1905a07c-7b82-4abf-acf4-8e9bda584136</identifier><description>Files and classes for machine vision: basic image processing, feature extraction, camera models, multiview imaging, etc.
+
+(Updated with several bug fixes, vgg functions, mex binaries, IPT versions of hitormiss+ilabel)</description><authors><author><name>Peter Corke</name><contact>rvc@petercorke.com</contact><organization></organization></author></authors></addonProperties>
