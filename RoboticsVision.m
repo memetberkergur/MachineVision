@@ -59,7 +59,10 @@ fileName = "images\FiratLogo.jpg";
 firatLogo = imread(fileName);
 axes(handles.axes1)
 imshow(firatLogo)
-
+global image;
+global p;
+global homographyMatrix;
+global calibrationImage;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -87,7 +90,7 @@ global image;
 global p;
 global homographyMatrix;
 global calibrationImage;
-calibrationImage = nan;
+calibrationImage = [];
 homographyMatrix = nan;
 p = nan;
 image = nan;
@@ -141,9 +144,13 @@ function red_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global calibrationImage
 global newImage
-newImage = colorDetector(calibrationImage,1);
-axes(handles.axes1)
-imshow(newImage)
+if isempty(calibrationImage)
+    msgbox("Lütfen İlk Önce Calibrasyonu Çalıştırın","HATA","error")
+else
+    newImage = colorDetector(calibrationImage,1);
+    axes(handles.axes1)
+    imshow(newImage)
+end
 
 % --- Executes on button press in green.
 function green_Callback(hObject, eventdata, handles)
@@ -152,10 +159,13 @@ function green_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global calibrationImage
 global newImage
-newImage = colorDetector(calibrationImage,2);
-axes(handles.axes1)
-imshow(newImage)
-
+if isempty(calibrationImage)
+    msgbox("Lütfen İlk Önce Calibrasyonu Çalıştırın","HATA","error")
+else
+    newImage = colorDetector(calibrationImage,2);
+    axes(handles.axes1)
+    imshow(newImage)
+end
 
 
 % --- Executes on button press in blue.
@@ -165,9 +175,13 @@ function blue_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 global calibrationImage
 global newImage
-newImage = colorDetector(calibrationImage,3);
-axes(handles.axes1)
-imshow(newImage)
+if isempty(calibrationImage)
+    msgbox("Lütfen İlk Önce Calibrasyonu Çalıştırın","HATA","error")
+else
+    newImage = colorDetector(calibrationImage,3);
+    axes(handles.axes1)
+    imshow(newImage)
+end
 
 
 
